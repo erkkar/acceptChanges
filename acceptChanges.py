@@ -1,6 +1,5 @@
 # %%
 import argparse
-import re
 
 from pylatexenc.latexwalker import (
     LatexEnvironmentNode,
@@ -116,4 +115,4 @@ try:
     with open(output_file, "w") as fp:
         fp.write(output + "\n")
 except TypeError:
-    print(output)
+    print(output)  # write to stdout if no file given
