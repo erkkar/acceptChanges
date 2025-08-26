@@ -4,6 +4,7 @@ version = "1.0"
 authors = [{ name = "Erkka Rinne", email = "erkka.rinne@fmi.fi" }]
 description = "Module for accepting all changes to LaTeX source marked using the package `changes`"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.6"
 classifiers = [
   "Programming Language :: Python :: 3",
