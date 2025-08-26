@@ -13,6 +13,7 @@ classifiers = [
   "Topic :: Text Processing :: Markup :: LaTeX",
 ]
 dependencies = ["pylatexenc ~=2.10"]
+urls = { repository = 'https://github.com/pandas-dev/pandas' }
 
 [tool.setuptools]
 py-modules = ["acceptChanges"]
