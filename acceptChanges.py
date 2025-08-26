@@ -5,7 +5,6 @@ from pylatexenc.latexwalker import (
     LatexGroupNode,
     LatexMacroNode,
     LatexWalker,
-    get_default_latex_context_db,
 )
 from pylatexenc.macrospec import LatexContextDb, MacroSpec, ParsedMacroArgs
 
