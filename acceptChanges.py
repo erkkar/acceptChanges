@@ -1,4 +1,3 @@
-# %%
 import argparse
 
 from pylatexenc.latexwalker import (
@@ -10,19 +9,14 @@ from pylatexenc.latexwalker import (
 )
 from pylatexenc.macrospec import MacroSpec, ParsedMacroArgs
 
-# %%
+# Set up argument parser
 argparser = argparse.ArgumentParser()
 argparser.add_argument("input", help="Input LaTeX file")
 group = argparser.add_mutually_exclusive_group()
 group.add_argument("--output", "-o", help="Output file")
 group.add_argument("--replace", "-x", help="Replace input file", action="store_true")
 
-# %%
-args = argparser.parse_args()
-input_file = args.input
-output_file = args.output if not args.replace else input_file
-
-# %%
+# Set up LaTeX context
 db = get_default_latex_context_db()
 db.add_context_category(
     "changes",
@@ -35,16 +29,7 @@ db.add_context_category(
     ],
 )
 
-# %%
-with open(input_file, mode="r") as fp:
-    w = LatexWalker(
-        fp.read(),
-        latex_context=db,
-    )
-    nodelist, pos, len = w.get_latex_nodes()
 
-
-# %%
 def process_changes_args(args: ParsedMacroArgs) -> str:
     # remove surrounding braces and newlines
     text_to_keep = args.latex_verbatim()[1:-1].strip("\n")
@@ -107,12 +92,30 @@ def process_nodes(nodelist: list) -> str:
     return output
 
 
-# %%
-output = process_nodes(nodelist)
+def main():
+    # Process arguments
+    args = argparser.parse_args()
+    input_file = args.input
+    output_file = args.output if not args.replace else input_file
 
-# %%
-try:
-    with open(output_file, "w") as fp:
-        fp.write(output + "\n")
-except TypeError:
-    print(output)  # write to stdout if no file given
+    # Read input file
+    with open(input_file, mode="r") as fp:
+        w = LatexWalker(
+            fp.read(),
+            latex_context=db,
+        )
+        nodelist, pos, len = w.get_latex_nodes()
+
+    # Process the data
+    output = process_nodes(nodelist)
+
+    # Write results
+    try:
+        with open(output_file, "w") as fp:
+            fp.write(output + "\n")
+    except TypeError:
+        print(output)  # write to stdout if no file given
+
+
+if __name__ == "__main__":
+    main()
