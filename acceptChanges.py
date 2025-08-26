@@ -66,12 +66,11 @@ def handle_macro_node(node: LatexMacroNode) -> str:
 
 
 def handle_environment(node: LatexEnvironmentNode) -> str:
-    # figures and tables cannot have changes anyway
-    if re.match(r"figure|table", node.environmentname):
-        return node.latex_verbatim()
-    elif node.args or any(node.optargs):
-        raise NotImplementedError("Environments with arguments are not supported!")
-    output = f"\\begin{{{node.environmentname}}}"
+    output = f"\\begin{{{node.environmentname}}}" + (
+        node.nodeargd.argnlist[0].latex_verbatim()
+        if any(node.nodeargd.argnlist)
+        else ""
+    )
     output += process_nodes(node.nodelist)
     output += f"\\end{{{node.environmentname}}}"
     return output
