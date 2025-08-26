@@ -7,7 +7,7 @@ from pylatexenc.latexwalker import (
     LatexWalker,
     get_default_latex_context_db,
 )
-from pylatexenc.macrospec import MacroSpec, ParsedMacroArgs
+from pylatexenc.macrospec import LatexContextDb, MacroSpec, ParsedMacroArgs
 
 # Set up argument parser
 argparser = argparse.ArgumentParser()
@@ -17,7 +17,7 @@ group.add_argument("--output", "-o", help="Output file")
 group.add_argument("--replace", "-x", help="Replace input file", action="store_true")
 
 # Set up LaTeX context
-db = get_default_latex_context_db()
+db = LatexContextDb()
 db.add_context_category(
     "changes",
     macros=[
@@ -50,11 +50,7 @@ def handle_macro_node(node: LatexMacroNode) -> str:
 
 
 def handle_environment(node: LatexEnvironmentNode) -> str:
-    output = f"\\begin{{{node.environmentname}}}" + (
-        node.nodeargd.argnlist[0].latex_verbatim()
-        if any(node.nodeargd.argnlist)
-        else ""
-    )
+    output = f"\\begin{{{node.environmentname}}}"
     output += process_nodes(node.nodelist)
     output += f"\\end{{{node.environmentname}}}"
     return output
